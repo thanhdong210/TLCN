@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block title %}{{object.title}}{% endblock %} {%
+block content %} {% block content %}
+
+<!--Main layout-->
+<main class="mt-5 pt-4">
+  <div class="container dark-grey-text mt-5">
+    <!--Grid row-->
+    <div class="row wow fadeIn col-12 offset-4">
+      
+      <!--Grid column-->
+      <form method="POST">
+      <h1 text-align="center">Đăng nhập</h1>
+        {% csrf_token %} {% for key.value in form.error.items %}
+         {{value}} 
+        {% endfor %}
+        <p><label>Tài khoản: &nbsp </label>{{form.username}}</p>
+        <p><label>Mật khẩu: &nbsp </label>{{form.password}}</p>
+        <input type="hidden" name="next" class="signup-btn" value="/" />
+         
+        <div>
+        <a class="nav-link waves-effect" href="/reset_password"
+                >Forgot password?</a
+              >   
+        <input type="submit" value="Đăng nhập" class="signup-btn" /> 
+           
+        </div>
+
+        <button class="loginBtn loginBtn--facebook">
+          <a href="{% url 'social:begin' 'facebook' %}" style="color:white;"> Login with Facebook</a>
+         
+        </button>
+        
+        
+         
+      </form>
+      <!--Grid column-->
+    </div>
+    
+  </div>
+</main>
+<!--Main layout-->
+
+{% endblock %}

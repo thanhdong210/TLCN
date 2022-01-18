@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% block title %}{{object.title}}
+{% endblock %} 
+{% block content %}
+
+<!--Main layout-->
+<main>
+<div class="container">
+  <div class="table-responsive text-nowrap">
+  <h2>Tổng kết đặt hàng</h2>
+    <table class="table caption-top">
+  
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Tên sản phẩm</th>
+      <th scope="col">Giá</th>
+      <th scope="col">Số lượng</th>
+      <th scope="col">Tổng tiền</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order_item in objects.items.all %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ order_item.item.title }}</td>
+      {% if order_item.item.discount_price %}
+      <td>{{ order_item.item.discount_price }}dong/kg</td>
+      {% else %}
+      <td>{{ order_item.item.price }}dong/kg</td>
+      {% endif %}
+      <td>
+        <a href="{% url 'core:remove-single-item-from-cart' order_item.item.slug %}"><i class="fas fa-minus"></i></a>
+        {{ order_item.quantity }}
+        <a href="{% url 'core:add-single-item-to-cart' order_item.item.slug %}"><i class="fas fa-plus"></i></a>
+      </td>
+      {% if order_item.item.discount_price %}
+        <td>{{ order_item.get_total_discount_item_price }}dong/kg (Save {{ order_item.get_amount_saved }}dong/kg)</td>
+      {% else %}
+        <td>{{ order_item.get_total_item_price }}dong/kg</td>
+      {% endif %}
+      <td>
+        <a style="color:black" href="{% url 'core:remove-the-item-from-cart' order_item.item.slug %}"><i class="fas fa-trash"></i></a> 
+      </td> 
+    </tr>
+    {% empty %}
+      <tr>
+        <th colspan="5">Giỏ hàng của bạn còn trống</th>
+      </tr>
+      <tr>
+        <th colspan="5">
+          <a class="btn btn-primary float-right" href="/">Quay lại mua sắm</a>
+        </th>
+      </tr>
+    {% endfor %}
+
+    {% if objects.total_price %}
+    <tr>
+      <th colspan="4">Tổng tiền</th>
+      <th>{{ objects.total_price }}dong/kg</th>
+    </tr>
+    
+    <tr>
+      <th colspan="5">
+      <a class="btn btn-warning float-right ml-3" href="/checkout">Tiến hành checkout</a>
+      <a class="btn btn-primary float-right" href="/">Tiếp tục mua sắm</a>
+      </th>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+    
+  </div>
+  </div>
+</main>
+<!--Main layout-->
+
+{% endblock %}
